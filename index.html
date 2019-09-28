@@ -1,0 +1,1413 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" dir="ltr" <head><title>
+	99.9% Dice - Bitcoin, Dogecoin, Litecoin и Ethereum игра
+</title><meta name="description" content="99,9% Dice является доказуемо ярмарка казино финансируется Bitcoins с домом краю 0,1%, а также программу сплит реферальной 50/50. Теперь с Dogecoins, Litecoins и Ethereum." /><link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css" /><meta name="viewport" content="width=device-width, initial-scale=1" /><link href="http://super999.ddns.net:999/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <!--[if lt IE 8]><script src="/Scripts/json2.min.js"></script><![endif]-->
+    
+<link href="http://super999.ddns.net:999/css1?v=GtQJWh2TSyffcIx-3jTuF7ahaEZBtOLTB4zuY1QsBBg1" rel="stylesheet"/>
+
+    <!--[if IE 9]><link href="/css/999ie9.css" rel="stylesheet" /><![endif]-->
+    <!--[if lt IE 9]><link href="/css/999ie8.css" rel="stylesheet" /><![endif]-->
+    <!--[if lt IE 8]><link href="/css/999ie7.css" rel="stylesheet" /><![endif]-->
+
+    <!--[if lt IE 9]><script src="/Scripts/respond.min.js"></script><![endif]-->    
+</head>
+<body>
+
+<script type="text/javascript" src="http://super999.ddns.net:999/scripts/jquery-1.12.3.js"  ></script>
+
+<script type="text/javascript" src="http://super999.ddns.net:999/scripts/jquery.fancybox.js"  ></script>
+
+<script type="text/javascript" src="http://super999.ddns.net:999/scripts/jquery.signalr-2.2.0.js"  ></script>
+
+<script type="text/javascript" src="http://super999.ddns.net:999/scripts/jquery.cookie.js"  ></script>
+
+
+<script type="text/javascript" src="http://super999.ddns.net:999/scripts/jquery.qrcode.js"  ></script>
+
+
+
+<script type="text/javascript" src="http://super999.ddns.net:999/js/model.js"  ></script>
+
+<script type="text/javascript" src="http://super999.ddns.net:999/js/controller.js"  ></script>
+
+
+<script type="text/javascript" src="view.js"></script>
+
+
+<script type="text/javascript" src="http://super999.ddns.net:999/js/support.js"  ></script>
+
+<script type="text/javascript" src="signalr/hubs"></script>
+
+<?php
+
+require_once("vendor/autoload.php");
+
+use Hammershark\SignalR\Client;
+
+$client = new Client("ws://super999.ddns.net:999/signalr", ["mainhub"]);
+
+$client->on("mainhub", "updateSummaryState", function($data) {
+    print_r($data);
+});
+
+$client->run();
+/?>
+    
+    
+    
+
+        <div class="HeaderBox OutlinedBox">
+            <div class="HeaderBoxContent">
+                <div id="HeaderLanguageBox">
+                    <span id="CurrentLanguage"></span>
+                </div>
+                <div class="HeaderBoxSelectors">
+                    <div class="TextButton HeaderBoxSelected" id="HeaderBoxSelectorsSite">Статистика сайта</div>
+                    <div class="TextButton" id="HeaderBoxSelectorsUser">Ваша статистика</div>
+                    <div class="TextButton" id="HeaderBoxSelectorsEarnings">Ваши доходы</div>
+                </div>
+                <h1>999Dice.com</h1>
+                <table>
+                    <tr>
+                        <td colspan="2" class="HeaderBoxSpacer HeaderBoxCol1"></td>
+                        <td colspan="2" class="HeaderBoxSpacer HeaderBoxCol2"></td>
+                        <td colspan="2" class="HeaderBoxSpacer HeaderBoxCol3"></td>
+                    </tr>
+                    <tr>
+                        <th class="HeaderBoxCol1">Ставки</th>
+                        <td class="HeaderBoxCol1" id="StatsSiteBetCount"></td>
+                        <th class="HeaderBoxCol2">Счет</th>
+                        <td class="HeaderBoxCol2">
+                            <span class="UserBalance"></span>
+                            <span class="CurrencyLabel CurrencyName"></span>
+                        </td>
+                        <th class="HeaderBoxCol3">Рефералы</th>
+                        <td class="HeaderBoxCol3" id="StatsUserReferralCount"></td>
+                    </tr>
+                    <tr>
+                        <th class="HeaderBoxCol1">Сумма ставок</th>
+                        <td class="HeaderBoxCol1">
+                            <span id="StatsSiteBetPayIn"></span>
+                            <span class="CurrencyLabel CurrencyName"></span>
+                        </td>
+                        <th class="HeaderBoxCol2">Ставки</th>
+                        <td class="HeaderBoxCol2" id="StatsUserBetCount"></td>
+                        <th class="HeaderBoxCol3">Ставки</th>
+                        <td class="HeaderBoxCol3" id="StatsUserReferralBetsCount"></td>
+                    </tr>
+                    <tr>
+                        <!--
+                        <th class="HeaderBoxCol1">Профит</th>
+                        <td class="HeaderBoxCol1">
+                            <span id="StatsSiteBetProfit"></span>
+                            <span class="CurrencyLabel CurrencyName"></span>
+                            <span id="StatsSiteBetUserProfit">(Пользователь)</span>
+                            <span id="StatsSiteBetSiteProfit">(Сайт)</span>
+                        </td>
+                        -->
+                        <th class="HeaderBoxCol1">Последняя Кнопка</th>
+                        <td class="HeaderBoxCol1"><span class="LastRain"></span></td>
+                        <th class="HeaderBoxCol2">Сумма ставок</th>
+                        <td class="HeaderBoxCol2">
+                            <span id="StatsUserBetPayIn"></span>
+                            <span class="CurrencyLabel CurrencyName"></span>
+                        </td>
+                        <th class="HeaderBoxCol3">Сумма ставок</th>
+                        <td class="HeaderBoxCol3">
+                            <span id="StatsUserReferralBets"></span>
+                            <span class="CurrencyLabel CurrencyName"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="HeaderBoxCol1">Макс профит</th>
+                        <td class="HeaderBoxCol1">
+                            <span id="SettingsMaxProfit"></span>
+                            <span class="CurrencyName"></span>
+                        </td>
+                        <th class="HeaderBoxCol2">Профит</th>
+                        <td class="HeaderBoxCol2">
+                            <span id="StatsUserBetProfit"></span>
+                            <span class="CurrencyLabel CurrencyName"></span>
+                        </td>
+                        <th class="HeaderBoxCol3">Заплачено на</th>
+                        <td class="HeaderBoxCol3">
+                            <span id="StatsUserReferralBetsPaid"></span>
+                            <span class="CurrencyLabel CurrencyName"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="HeaderBoxCol1"></th>
+                        <td class="HeaderBoxCol1"> <span class="HeaderBoxLabels OutlinedBox"><span class="HeaderBoxLabelContent">Статистика сайта</span></span></td>
+                        <th class="HeaderBoxCol2">% Выигрышей</th>
+                        <td class="HeaderBoxCol2">
+                            <span id="StatsUserBetWinRate"></span>
+                            <span class="HeaderBoxLabels OutlinedBox"><span class="HeaderBoxLabelContent">Ваша статистика</span></span>
+                        </td>
+                        <th class="HeaderBoxCol3">Доходы</th>
+                        <td class="HeaderBoxCol3">
+                            <span id="StatsUserEarnings"></span>
+                            <span class="CurrencyLabel CurrencyName"></span>
+                            <span class="HeaderBoxLabels OutlinedBox"><span class="HeaderBoxLabelContent">Ваши доходы</span></span>
+                        </td>
+                    </tr>
+                </table>
+            </div>            
+        </div>        
+
+        <div id="DisplayCurrencies">
+            <span data-currency="1">BTC</span> <span data-currency="2">Doge</span> <span data-currency="3">LTC</span> <span data-currency="4">ETH</span> 
+        </div>
+
+
+        <div id="DiceThieves3" style="color: orange; text-align: center; max-width: 600px; margin: 0 auto">
+            <p>
+                <span style='color:red'>Beware of phishing emails. (Example: support@999doge.com is FAKE). I will never ask you for your password. I will never ask you to send money or tell you there are processing fees.</span>
+                <br />
+            <br /><span id="HideDiceThieves3" style="color:yellow; cursor: pointer">скрыть</span></p>
+             <script type="text/javascript">
+                 $(function(){
+                     $("#HideDiceThieves3").click(function(){
+                         $("#DiceThieves3").remove();
+                         view.permaHideWarnings("DiceThieves3");
+                     });
+                 });
+             </script>
+        </div>
+
+        <div id="SiteLoading">Загрузка...</div>
+        <div id="SiteConnecting" style="display: block;">Подключение...</div>
+        
+        <div class="OutlinedBox ExtendLeftRight" id="ActionBoxContainer" style="display: block;">
+            <div class="CheckeredBackground" style="text-align: center;">
+                <div id="DepositEarnActionBoxSet" class="ActionBoxSet"style="display: block;">
+                    <div class="ActionBox SplitActionBox" id="DepositActionBox">
+                        <div class="DepositAddressQRContainer">
+                            <div class="DepositAddressQR"></div>
+                            <p>Нажмите, чтобы увеличить</p>
+                        </div>                        
+                        <h1>Депозит</h1>
+                        <p>
+                            Депозиты могут быть сделаны для <span class="BitcoinAddress DepositAddress">...[нажмите]...</span><input type="text" class="StandardTextBox visible LongDepositAddress" readonly="readonly" />
+                            <span><a href="#" class="DepositAddressLink visible">[Ссылка]</a></span>
+                        </p>
+                        <p>Внесенный депозит будет немедленно доступен.Также, если вы желаете,депозит можно вносить по старым адресам.</p>
+                        <p>Большинство транзакций требует хотя бы 1 подтверждение. Минимальная сумма для вывода : 0.0005 BTC/2 Doge/0.002 LTC/0.005 ETH</p>
+                        <br class="Clear" />
+                    </div><div class="ActionBox SplitActionBox NoLeftBorder" id="EarnActionBox">
+                        <h1>Заработать</h1>
+                        <p>
+                            Вы можете заработать дополнительные <span class='CurrencyName'></span>, приводя посетителей на сайт, при этом используя вашу собственную реферальную ссылку:
+                            <span class="ReferralLink HighlightedText"></span>
+                        </p>
+                        <p>50% от комиссии с КАЖДОЙ ставки, сделанной КАЖДЫМ игроком, зашедшего по вашей реферальной ссылке будут перечислены на ваш счет (50% x 0,1% = 0.05% от всех ставок - Разделите на 2000!). Независимо от того, выигрывают они или проигрывают, вы по-прежнему зарабатываете деньги.</p>
+                        <p><a href="#" class="ReferralsMoreInfo">Больше информации</a></p>
+                    </div><br /><div class="ActionBoxTab ActionBoxTabButton" id="PracticeBetsButton">
+                        Практика Ставки
+                    </div><div class="ActionBoxTab ActionBoxTabButton" id="ShowFaucetBoxButton">
+                        Бесплатные <span class='CurrencyFullName'></span>
+                    </div>
+                </div>
+
+                <div id="BetActionBoxSet" class="ActionBoxSet">
+                    <div class="ActionBox BetControlsActionBox" id="BetSizeActionBox">
+                        <div class="BetControlButton" data-key="q" id="MinBetButton">
+                            <span class="BetControlTitle">мин</span>
+                            <span class="Keyboard">Q</span>
+                        </div>
+                        <div class="BetControlButton" data-key="w" id="MaxBetButton">
+                            <span class="BetControlTitle">макс</span>
+                            <span class="Keyboard">W</span>
+                        </div><br />
+                        <div class="BetControlButton" data-key="a" id="BetResetButton">
+                            <span class="BetControlTitle">Сброс</span>
+                            <span class="Keyboard">A</span>
+                        </div>
+                        <div class="BetControlButton" data-key="s" id="Bet10Button">
+                            <span class="BetControlTitle">10 %</span>
+                            <span class="Keyboard">S</span>
+                        </div><br />
+                        <div class="BetControlButton" data-key="z" id="MultiplyBetButton">
+                            <span class="BetControlTitle">удвоить</span>
+                            <span class="Keyboard">Z</span>
+                        </div>
+                        <div class="BetControlButton" data-key="x" id="DivideBetButton">
+                            <span class="BetControlTitle">половина</span>
+                            <span class="Keyboard">X</span>
+                        </div><br />
+                        <p>Размер ставки</p>
+                        <input type="text" id="BetSizeInput" maxlength="15" class="StandardTextBox" />
+                    </div><div class="ActionBox BetControlsActionBox NoLeftBorder" id="BetChanceActionBox">
+                        <div class="BetControlButton" data-key="e" id="MinChanceButton">
+                            <span class="BetControlTitle">мин</span>
+                            <span class="Keyboard">E</span>
+                        </div>
+                        <div class="BetControlButton" data-key="r" id="MaxChanceButton">
+                            <span class="BetControlTitle">макс</span>
+                            <span class="Keyboard">R</span>
+                        </div><br />
+                        <div class="BetControlButton" data-key="d" id="ChanceDefaultButton">
+                            <span class="BetControlTitle">49.95%</span>
+                            <span class="Keyboard">D</span>
+                        </div>
+                        <div class="BetControlButton" data-key="f" id="Chance50Button">
+                            <span class="BetControlTitle">50%</span>
+                            <span class="Keyboard">F</span>
+                        </div><br />
+                        <div class="BetControlButton" data-key="c" id="MultiplyChanceButton">
+                            <span class="BetControlTitle">удвоить</span>
+                            <span class="Keyboard">C</span>
+                        </div>
+                        <div class="BetControlButton" data-key="v" id="DivideChanceButton">
+                            <span class="BetControlTitle">половина</span>
+                            <span class="Keyboard">V</span>
+                        </div><br />
+                        <p>% Шанс выигрыша</p>
+                        <input type="text" id="BetChanceInput" maxlength="8" class="StandardTextBox" />
+                    </div><div class="ActionBox BetActionBox NoLeftBorder">
+                        <p>Профит побед</p>
+                        <p>
+                            <span id="BetProfitLabel" class="Number GoodNumber"></span> <span class="CurrencyName"></span>
+                        </p>
+                        <div class="BetButtonContainer">
+                            <div class="FinePrint">0 - <span id="BetTargetLow"></span></div>
+                            <div class="BetButton" data-key="l" id="BetLowButton">
+                                <span class="BetControlTitle">Меньше</span>
+                                <span class="Keyboard">L</span>
+                            </div>
+                        </div>
+                        <div class="BetButtonContainer">
+                            <div class="FinePrint"><span id="BetTargetHigh"></span> - 999999</div>
+                            <div class="BetButton" data-key="h" id="BetHighButton">
+                                <span class="BetControlTitle">Больше</span>
+                                <span class="Keyboard">H</span>
+                            </div>
+                        </div>
+                        <div class="ManualSeedControls">
+                            Номер клиента
+                            <input type="number" min="0" max="999999999" value="0" class="StandardTextBox" />
+                        </div>
+                        <div id="LastBetInfoContainer">
+                            <span id="LastBetInfoWon">Посл. ставка: выигрыш</span>
+                            <span id="LastBetInfoLost">Посл. ставка: проигрыш</span>
+                            <span id="LastBetInfoProfit"></span><span id="LastBetInfoProfitZeroes" class="NeutralNumber NumberIrrelevant"></span>
+                            <span><span id="LastBetInfoCurrency"></span>      [<span id="LastBetInfoSecret"></span>]</span>
+                            <span id="LastBetInfoDelay">[<span id="LastBetInfoDelayAmount"></span>]</span>
+                        </div>
+                    </div><br /><div class="ActionBoxTab ActionBoxTabButton" id="AutoBetsActionTabButton">
+                        Автоматизированные ставки
+                    </div><div class="ActionBoxTab" id="BalanceActionBoxTab">
+                        <div class="TextButton DepositButton">
+                            Депозит
+                        </div>            
+                        <div>
+                            Счет
+                            <span class="Numbers HighlightedText UserBalance"></span><span class="Numbers NeutralNumber NumberIrrelevant UserBalanceZeroes"></span>
+                            <span class="CurrencyName"></span>
+                        </div>
+                        <div class="TextButton WithdrawButton">
+                            Выплата
+                        </div>
+                    </div>
+                </div>
+
+                <div id="AutoBetsActionBoxSet" class="ActionBoxSet">
+                    <div class="ActionBox BetControlsActionBox" id="AutoBetsStandardsBox">
+                        <p>Размер первоначальной ставки</p>
+                        <input type="text" id="AutoBetSizeInput" maxlength="15" class="StandardTextBox" value="" />
+                        <p>% Шанс выигрыша</p>
+                        <input type="text" id="AutoBetChanceInput" maxlength="8" class="StandardTextBox" value="49.95" />
+                        <p>Кол-во ставок</p>
+                        <input type="text" id="AutoBetNumBets" maxlength="4" class="StandardTextBox" value="10" />
+                        <p>Максимальный размер ставки</p>
+                        <input type="text" id="AutoBetMaxSizeInput" maxlength="15" class="StandardTextBox" />
+                    </div><div class="ActionBox BetControlsActionBox NoLeftBorder" id="AutoBetsVarianceBox">
+                        <p>
+                            <input type="checkbox" id="AutoBetResetOnWin" checked class="StandardCheckBox" />
+                            Сброс в случае победы
+                        </p>
+                        <div id="AutoBetIncreaseWinBox">
+                            <p>% Увеличить после победы</p>
+                            <input type="text" id="AutoBetIncreaseOnWin" maxlength="5" class="StandardTextBox" value="100" />
+                        </div>
+                        <p>
+                            <input type="checkbox" id="AutoBetResetOnLoss" checked class="StandardCheckBox" />
+                            Сброс в случае проигрыша
+                        </p>
+                        <div id="AutoBetIncreaseLossBox">
+                            <p>% Увеличить после потери</p>
+                            <input type="text" id="AutoBetIncreaseOnLoss" maxlength="5" class="StandardTextBox" value="100" />
+                        </div>
+                        <p id="AutoBetLoseActions">
+                            После потери максимальная ставка ...
+                            <br />
+                            <input type="checkbox" id="AutoBetResetOnLoseMaxBet" class="StandardCheckBox" />
+                            Возврат к базовой ставке
+                            <br />
+                            <input type="checkbox" id="AutoBetStopOnLoseMaxBet" class="StandardCheckBox" />
+                            Стоп
+                        </p>
+                    </div><div class="ActionBox BetActionBox NoLeftBorder">
+                        <h1>Автоматические ставки</h1>
+                        <p><span class="CurrencyName HighlightedText"></span></p>
+                        <div class="BetButtonContainer KeyboardDisabled">
+                            <div class="FinePrint">0 - <span id="AutoBetTargetLow"></span></div>
+                            <div class="BetButton" id="AutoBetLowButton">
+                                <span class="BetControlTitle">Меньше</span>
+                            </div>
+                        </div>
+                        <div class="BetButtonContainer KeyboardDisabled">
+                            <div class="FinePrint"><span id="AutoBetTargetHigh"></span> - 999999</div>
+                            <div class="BetButton" id="AutoBetHighButton">
+                                <span class="BetControlTitle">Больше</span>
+                            </div>
+                        </div>                                                
+                        <div class="ManualSeedControls">
+                            Номер клиента
+                            <input type="number" min="0" max="999999999" value="0" class="StandardTextBox" />
+                        </div>
+                        <div id="LastAutoBetInfoContainer">
+                            <span id="LastAutoBetInfoWon">Профит</span>
+                            <span id="LastAutoBetInfoLost">Потерял</span>
+                            <span id="LastAutoBetInfoProfit"></span><span id="LastAutoBetInfoProfitZeroes" class="NeutralNumber NumberIrrelevant"></span>
+                            <span><span id="LastAutoBetInfoCurrency"></span>      [# Ставки: <span id="LastAutoBetInfoCount"></span>]</span>
+                            <br />
+                            <span class="FinePrint">Ставка ID <span id="LastAutoBetInfoID"></span></span>
+                        </div>
+                    </div><br /><div class="ActionBoxTab ActionBoxTabButton" id="SingleBetsButton">
+                        Вручную
+                    </div>
+                </div>
+
+                <div id="FaucetActionBoxSet" class="ActionBoxSet" style="display:block">
+                    <div class="ActionBox SplitActionBox" id="FaucetInfoActionBox">
+                        <h1>Бесплатный <span class='CurrencyFullName'></span></h1>
+                        <p>Мы считаем, важным для наших посетителей, иметь возможность опробовать наше казино. Поэтому время от времени мы активируем бесплатные <span class='CurrencyFullName'></span>.</p>
+                        <p>Вы можете бесплатно получить небольшое количество валюты <span class='CurrencyFullName'></span>. Таким образом, вы сможете опробовать казино, узнать его особенности и привыкнуть к элементам управления, не рискуя при этом своими деньгами.</p>
+                        <p>Получать стартовый бонус можно на одном аккаунте, один раз в 2.5 минут и с одного IP-адреса.</p>
+                    </div><div class="ActionBox SplitActionBox NoLeftBorder" id="FaucetControlsActionBox">
+                        <div class="FaucetClaimButton">
+                            <span class="FaucetClaimTitle">Получить <span class='CurrencyFullName'></span></span>
+                        </div>
+                        <p id="FaucetClaimWarning" class="FinePrint">Боты запрещены. Вы будете забанены, если автоматизируете этот процесс</p>
+                        <div id="FaucetMaxBalanceInfo">
+                            <p>
+                                Бонус будет доступен,если ваш баланс будет составлять менее:                                
+                                <span id="FaucetMaxBalance" class="Numbers GoodNumber"></span>
+                            </p>
+                        </div>
+                        <div id="FaucetClaimInfo">
+                            <div id="FaucetClaimInfoSuccess">
+                                <p>Вы успешно получили <span id="FaucetClaimInfoAmount"></span></p>
+                                <p>Следующий бонус Вы сможете получить через  <span id="FaucetClaimInfoNext" class="GoodNumber"></span> Минут</p>
+                                <p><span id="FaucetLetsPlayButton" class="TextButton">Давайте играть!</span></p>
+                            </div>
+                            <p id="FaucetClaimInfoFailed">Нет биткойнов не были заявлены: <span id="FaucetClaimInfoFailReason"></span></p>
+                            <div id="FaucetClaimInfoEarly">
+                                <p>Прошло слишком мало времени,чтобы получить следующий бонус!</p>
+                                <p>Ваш следующий бонус может быть получен по истечении:</p>
+                                <ul>
+                                    <li>Для вашего счета: <span id="FaucetClaimInfoEarlyNextAccount" class="BadNumber"></span> Минут</li>
+                                    <li>Для вашего IP-адреса: <span id="FaucetClaimInfoEarlyNextIP" class="BadNumber"></span> Минут</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div><br /><div class="ActionBoxTab ActionBoxTabButton" id="FaucetBetsButton">
+                        Ставки
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="TranslationComments">
+            <p>This language is newly translated. Bad translation? A few wrong words? Send a message in the "Contact" tab!<br />
+                <span id="HideTranslationComments" style="color: yellow; cursor: pointer">скрыть</span>
+            </p>
+        </div>
+        
+        <div class="visible" id="LoginWarning">
+            <p>Вы не вошли в систему. Вы можете войти или создать имя пользователя и пароль в разделе "Аккаунт", который расположен ниже.<br /><span id="HideLoginWarning">скрыть</span></p>
+        </div>
+
+        <div class="visible" id="UnconfirmedDeposits">
+            <p>Вывод будет осуществлен после подтверждения депозита: <span id="UnconfirmedDepositLinks"></span>
+            <br /><span id="HideUnconfirmedDeposits">скрыть</span></p>
+        </div>
+
+        <div class="visible" id="RadioContainer">
+            <p id="RadioTitle"></p>
+            <div id="RadioControlContainer"></div>
+            <p id="RadioSubtitle"></p>
+        </div>
+                
+        <div style="display: block; color: orange; text-align: center; max-width: 600px; margin: 0 auto" id="MirrorSite">
+            <p>Если 999dice.com заблокирован, попробуйте https://www.999proxy.com | https://ru.999dice.com/ | http://super999.ddns.net:999/
+                <br />
+                <span style="color:red">Предупреждения! Опасности! WARNING! Фальшив! FAKE!: 999dice-block.ru, yay999-ddns.net, supier999.ddns.net, 999proxy-ddns.16mb.com</span>
+                <br /><span id="HideMirrorSite" style="color: yellow; cursor: pointer">скрыть</span>
+            </p>
+            <script type="text/javascript">
+                $(function(){
+                    $("#HideMirrorSite").click(function(){
+                        $("#MirrorSite").remove();
+                        view.permaHideWarnings("MirrorSite");
+                    });
+                    $("html[lang='ru'] #MirrorSite").show();
+                    $("html[lang='uk'] #MirrorSite").show();
+                    $("html[lang='be'] #MirrorSite").show();
+                    $("html[lang='bg'] #MirrorSite").show();                    
+                });
+            </script>
+        </div>
+
+        <div id="ContentTabsContainer">
+            <div class="ContentTab ActiveTab">Все ставки</div>
+            <div class="ContentTab ActiveTab" >Мои ставки</div>
+            <div class="ContentTab ActiveTab" checked>Чат</div>
+            <div class="ContentTab ActiveTab">Аккаунт</div>
+            <div class="ContentTab">Честные ставки</div>
+            <div class="ContentTab">Про 99,9%</div>
+            <div class="ContentTab">Как играть</div>
+            <div class="ContentTab ActiveTab" checked><span class='CurrencyName'></span> от рефералов</div>
+            <div class="ContentTab">Контакты</div>
+            <div class="ContentTab">API & Боты</div>
+            <div class="ContentTab visible" data-tab="Radio">Radio</div>
+
+            <div id="VisibleContentContainer">
+                <div id="AllBets">                    
+                    <div>
+                        <input type="checkbox" class="StandardCheckBox" checked id="AllBetsStream" />
+                        <span>показать ставки</span>
+                    </div>
+                    <table class="BetsTable">
+                        <thead>
+                            <tr>
+                                <th>Игрок</th>
+                                <th>Число</th>
+                                <th>Цель</th>
+                                <th class="BetSizeColumn">Размер ставки</th>
+                                <th>Профит</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="UserBets">
+                    <table class="BetsTable">
+                        <thead>
+                            <tr>
+                                <th>Игрок</th>
+                                <th>Число</th>
+                                <th>Цель</th>
+                                <th class="BetSizeColumn">Размер ставки</th>
+                                <th>Профит</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="ChatTab" class="PaddedTabContent CenteredTabContent">
+
+        <div id="Thieves" style="color: orange; text-align: center; max-width: 600px; margin: 0 auto">
+            <p>
+                <!--Never download bots from youtube. They are viruses.<br />Никогда не загружайте боты с Youtube. Они являются вирусами.-->
+                <!--Never use the same password on 999dice as on any other website.<br />Никогда не используйте тот же пароль на 999dice как на любом другом сайте-->
+                <!--Always be suspicious of advertisements posted by other players (often they try to hack your account)<br />
+                Остерегайтесь рекламы в чате, написанной другими игроками (чаще всего они пытаются взломать ваш счет)-->
+                Valid mirrors / Действительный зеркала: <br />
+                www.999proxy.com <span class="more" style="cursor: pointer"> [...]</span><span class="more" style="display: block"><br/>http://super999.ddns.net:999/<br />ru.999dice.com<br />www.999-dice.com<br />www.999doge.com<br />www.notdicelol.com<br />https://www.notdicelol.com:9999</span><br />
+                Other mirrors mentioned in chat will steal your password.<br />                
+                Другие зеркала, упомянутых в чате будет украсть ваш пароль.
+                <!--Most "coin generator" software contain viruses to steal your password<br />
+                Будьте осторожны! Программное обеспечение "генератор монет" содержит вирусы, которые воруют ваши пароли-->
+            <br /><span id="HideThieves" style="color:yellow; cursor: pointer">скрыть</span></p>
+             <script type="text/javascript">
+                 $(function(){
+                     $("#HideThieves").click(function(){
+                         $("#Thieves").remove();
+                         view.permaHideWarnings("Thieves");
+                     });
+                     $("#Thieves .more").click(function(){$("#Thieves .more").toggle();});                     
+                 });
+             </script>
+        </div>
+
+                    
+
+                    <div style="position: relative">
+                        <div id="ChatTabChatContainer"></div>
+                    </div>
+                    <p>
+                        <input id="ChatTabText" type="text" maxlength="255" class="StandardTextBox" />
+                        <span id="ChatTabSendButton" class="TextButton">
+                            Отправить
+                        </span>
+                        <span id="ChatTabModButton" class="TextButton visible">Mod</span>
+                    </p>
+                    <p id="ChatTabOtherRooms">
+                        <span data-room="1">English</span>
+                        <span data-room="5">Indonesia</span>
+                        <span data-room="9">Русский</span>
+                        <span data-room="15">Український</span>
+                        <span data-room="18">Uzbek</span>
+                        <span data-room="13">Any</span>                        
+                    </p>
+                </div>
+                <div id="AccountTab" class="PaddedTabContent CenteredTabContent">
+                    <p>
+                        Ваш аккаунт #
+                        <span id="AccountTabUserId" class="Numbers HighlightedText"></span>
+                    </p>
+                    <p>
+                        Ваше имя для показа
+                        <input type="text" maxlength="30" id="AccountTabFriendlyName" class="StandardTextBox" />
+                    </p>
+                    <p>
+                        <span id="AccountTabUserNameText">Ваше имя для входа</span>
+                        <span id="AccountTabUserName" class="HighlightedText"></span>
+                        <span class="TextButton" id="AccountTabCreateUser">
+                            Создайте имя пользователя и пароль
+                        </span>
+                        <span class="TextButton" id="AccountTabChangePassword">
+                            Изменить пароль
+                        </span>                        
+                    </p>
+                    <p>
+                        <span id="AccountTabIdentityContainer">
+                            Ваша идентичность
+                            <span id="AccountTabIdentity" class="HighlightedText"></span>
+                        </span>
+                        <span class="TextButton" id="AccountTabCreateAttachIdentity">
+                            Привязка идентичности
+                        </span>
+                    </p>
+                    <p id="AccountTabSetupTotpContainer">
+                        <span class="TextButton SetupTotpButton">
+                            Google Authenticator (2FA)
+                        </span>                        
+                    </p>
+                    <p>
+                        Ваш адрес BTC для вывода средств
+                        <input type="text" maxlength="106" id="AccountTabEmergencyAddress" class="StandardTextBox" />
+                    </p>
+                    <p>
+                        Ваш email адрес
+                        <input type="text" maxlength="100" id="AccountTabEmail" class="StandardTextBox" />
+                    </p>
+                    <p>
+                        <input type="checkbox" id="AccountTabAllowKeyboardBetParams" />
+                        Разрешить изменять ставку используя клавиатуру
+                        <br />
+                        <input type="checkbox" id="AccountTabAllowKeyboardMaxBet" />
+                        Разрешить регулирование размера максимальной ставки используя клавиатуру
+                        <br />
+                        <input type="checkbox" id="AccountTabAllowKeyboardBets" />
+                        Разрешить делать ставки используя клавиатуру
+                        <br />
+                        <input type="checkbox" id="AccountTabOverlappingBetsAllowed" />
+                        Разрешить перекрытие ставки
+                        <br />
+                        <input type="checkbox" id="AccountTabStreamAllBets" />
+                        Отображать список "Все ставки"
+                        <br />
+                        <input type="checkbox" id="AccountTabAnnounceHighBets" />
+                        Предупреждать об использовании больших ставок
+                        (мин: 
+                        <input type="text" data-currencyid="1" class="StandardTextBox AccountTabAnnounceHighBetsThreshhold" />
+                        BTC
+                        ...
+                        <input type="text" data-currencyid="2" class="StandardTextBox AccountTabAnnounceHighBetsThreshhold" />
+                        Doge                        
+                        ...
+                        <input type="text" data-currencyid="3" class="StandardTextBox AccountTabAnnounceHighBetsThreshhold" />
+                        LTC
+                        ...
+                        <input type="text" data-currencyid="4" class="StandardTextBox AccountTabAnnounceHighBetsThreshhold" />
+                        ETH)
+                        <br />
+                        <input type="checkbox" id="AccountTabConfirmMaxBet" />
+                        Подтверждать максимальную ставку
+                        <br />
+                        <input type="checkbox" id="AccountTabWarnSwitchCurrencies" />
+                        Предупреждать после переключения валюты
+                    </p>                    
+                    <p class="GroupedBlock">
+                        Перейти к другому пользователю<br />
+                        <input type="text" maxlength="50" id="AccountTabLoginUsername" class="StandardTextBox" /><br />
+                        Пароль<br />
+                        <input type="password" maxlength="100" id="AccountTabLoginPassword" class="StandardTextBox" /><br />
+                        Google Authenticator #<br />
+                        <input type="number" min="0" max="999999" id="AccountTabLoginTotp" class="StandardTextBox TotpTextBox" /><br /><br />
+                        <span class="TextButton" id="AccountTabLogin">
+                            Войти
+                        </span>
+                    </p>
+                    <p>
+                        <span class="TextButton" id="AccountTabLogout">
+                            Выйти
+                        </span>
+                    </p>
+                    <p> </p>
+                    <h3>Депозиты</h3>
+                    <p><span class="TextButton" id="AccountTabUpdateDeposits">Показать</span><span class="TextButton" id="AccountTabUpdateDeposits10">Показать 10</span></p>
+                    <table id="AccountTabDepositsTable">
+                        <thead>
+                            <tr>
+                                <th>Адрес</th>
+                                <th>Сумма</th>
+                                <th>Дата</th>
+                                <th>Хэш транзакций</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <h3>Выводы</h3>
+                    <p><span class="TextButton" id="AccountTabUpdateWithdrawals">Показать</span><span class="TextButton" id="AccountTabUpdateWithdrawals10">Показать 10</span><span class="TextButton" id="AccountTabCancelWithdrawals">Отменить B ожидании</span></p>
+                    <table id="AccountTabWithdrawalsTable">
+                        <thead>
+                            <tr>
+                                <th>Адрес</th>
+                                <th>Сумма</th>
+                                <th>Комиссия за перевод</th>
+                                <th>Запрос</th>
+                                <th>Статус</th>
+                                <th>Завершено</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <h3>Рефералы</h3>
+                    <p><span class="TextButton" id="AccountTabUpdateReferralPayouts">Показать</span><span class="TextButton" id="AccountTabUpdateReferralPayouts10">Показать 10</span></p>
+                    <table id="AccountTabReferralPayoutsTable">
+                        <thead>
+                            <tr>
+                                <th>Сумма</th>
+                                <th>Дата</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <h3>Бесплатные <span class='CurrencyFullName'></span></h3>
+                    <p><span class="TextButton" id="AccountTabUpdateFaucetPayouts">Показать</span><span class="TextButton" id="AccountTabUpdateFaucetPayouts10">Показать 10</span></p>
+                    <table id="AccountTabFaucetPayoutsTable">
+                        <thead>
+                            <tr>
+                                <th>Сумма</th>
+                                <th>Дата</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <h3>Регулировка</h3>
+                    <p><span class="TextButton" id="AccountTabUpdateBalanceAdjustments">Показать</span><span class="TextButton" id="AccountTabUpdateBalanceAdjustments10">Показать 10</span></p>
+                    <table id="AccountTabBalanceAdjustmentsTable">
+                        <thead>
+                            <tr>
+                                <th>Сумма</th>
+                                <th>Дата</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div id="FairTab" class="PaddedTabContent CenteredTabContent">
+                    <div>
+                        <p>
+                            Гарантированно, что ставки справедливы, потому что номер уже известен до того, как вы сделаете ставку.
+                        </p>
+                        <p>
+                            Формула
+                        </p>
+                        <ol dir="ltr">
+                            <li>Server Seed + Client Seed (->byte[4]) + Номер ставки (->byte[4])</li>
+                            <li>Двойной хэш SHA2 512 результат</li>
+                            <li>Продолжать принимать группы из байт и преобразовывать в целое до тех пор, пока значение меньше 16 миллионов не будет найдено. Если у вас кончились байты, всё начнётся с начала.</li>
+                            <li>Найти значение модуля из 1 миллиона</li>
+                            <li>Модуль является результатом ставки!</li>
+                        </ol>
+                        <p>
+                            Вам дают хэш номер сервера. После того, как ставка сделана,и полученное число будет доступно, вы сможете проверить честность ставки. Для автоматизации ставок, все они сделаны, используя тот же номер сервера
+                        </p>
+                        <p>
+                            Текущий хэш номер сервера
+                            <span class="HighlightedText FairTabServerSeedHash"></span>
+                            <span class="TextButton FairTabReveal">
+                                Получить хэш номер сервера
+                            </span>
+                            <br />
+                            <input type="checkbox" id="AccountTabManualSeed" />
+                            Установите номер клиента вручную
+                        </p>
+                        <p>Вот фактическая функция SQL этот сайт использует (без обработки ошибок)</p>
+                        <pre dir="ltr">
+create function dbo.CalculateBetResult
+(
+	@serverSeed binary(32),
+	@clientSeed binary(8)
+)
+returns bigint
+as
+begin
+	declare @hash binary(64)
+	declare @index int
+	declare @r bigint
+	
+	set @hash = HASHBYTES('SHA2_512', @serverSeed+@clientSeed)
+	set @hash = HASHBYTES('SHA2_512', @hash)
+	while 1=1
+	begin
+		
+		set @index = 1
+		while @index <= 64 - 3
+		begin
+			set @r = cast(substring(@hash, @index, 3) as bigint)
+			if @r < 16000000
+				return @r % 1000000
+			set @index += 3
+		end
+
+		set @hash = HASHBYTES('SHA2_512', @hash)
+
+	end
+	return -1
+end
+                        </pre>
+                        <p>А вот некоторые C# код (без контроля ошибок) вы можете также использовать для проверки результатов</p>
+                        <pre dir="ltr">
+static bool VerifyBetResult(string serverSeed, int clientSeed, int betNumber,
+                            long betResult, string serverSeedHash = null)
+{
+    Func<string, byte[]> strtobytes = s => Enumerable
+        .Range(0, s.Length / 2)
+        .Select(x => byte.Parse(s.Substring(x * 2, 2), NumberStyles.HexNumber))
+        .ToArray();
+    byte[] server = strtobytes(serverSeed);
+    byte[] client = BitConverter.GetBytes(clientSeed).Reverse().ToArray();
+    byte[] num = BitConverter.GetBytes(betNumber).Reverse().ToArray();
+    byte[] serverhash = serverSeedHash == null ? null : strtobytes(serverSeedHash);
+    byte[] data = server.Concat(client).Concat(num).ToArray();
+    using (SHA512 sha512 = new SHA512Managed())
+    {
+        if (serverhash != null)
+            using (SHA256 sha256 = new SHA256Managed())
+                if (!sha256.ComputeHash(server).SequenceEqual(serverhash))
+                    throw new Exception("Server seed hash does not match server seed");
+        byte[] hash = sha512.ComputeHash(sha512.ComputeHash(data));
+        while (true)
+        {
+            for (int x = 0; x <= 61; x += 3)
+            {
+                long result = (hash[x] << 16) | (hash[x + 1] << 8) | hash[x + 2];
+                if (result < 16000000)
+                    return result % 1000000 == betResult;
+            }
+            hash = sha512.ComputeHash(hash);
+        }
+    }
+}
+                        </pre>
+                        <p>
+                            <span class="TextButton" id="FairTabShowOldMethod">
+                                Предыдущая
+                            </span>
+                        </p>
+                    </div>
+                    <div id="FairTabOldMethod" class="visible">
+                        <h2>Предыдущая (ID < 8764625845)</h2>
+                        <p>
+                            Гарантированно, что ставки справедливы, потому что номер уже известен до того, как вы сделаете ставку.
+                        </p>
+                        <p>
+                            Формула
+                        </p>
+                        <ol>
+                            <li>Номер ставки (->char[]->byte[]) + Server Seed + Client Seed (->byte[8])</li>
+                            <li>Двойной хэш SHA2 512 результат</li>
+                            <li>Продолжать принимать группы из байт и преобразовывать в целое до тех пор, пока значение меньше 16 миллионов не будет найдено. Если у вас кончились байты, всё начнётся с начала.</li>
+                            <li>Найти значение модуля из 1 миллиона</li>
+                            <li>Модуль является результатом ставки!</li>
+                        </ol>
+                        <p>
+                            Вам дают хэш номер сервера. После того, как ставка сделана,и полученное число будет доступно, вы сможете проверить честность ставки. Для автоматизации ставок, все они сделаны, используя тот же номер сервера
+                        </p>
+                        <p>
+                            Ваш текущий и последний номер ставки
+                            <input type="text" maxlength="18" id="FairTabClientSeed" class="StandardTextBox" />
+                        </p>
+                        <p>
+                            Текущий хэш номер сервера
+                            <span class="HighlightedText FairTabServerSeedHash"></span>
+                            <span class="TextButton FairTabReveal">
+                                Получить хэш номер сервера
+                            </span>
+                        </p>
+                        <p>Вот фактическая функция SQL этот сайт использует (без обработки ошибок)</p>
+                        <pre>
+create function dbo.CalculateBetResult
+(
+	@serverSeed binary(32),
+	@clientSeed binary(8),
+	@betNumber bigint
+)
+returns bigint
+as
+begin
+	declare @hash binary(64)
+	declare @index int
+	declare @r bigint
+	
+	set @hash = HASHBYTES('SHA2_512', cast(cast(@betNumber as varchar) as varbinary)+@serverSeed+@clientSeed)
+	set @hash = HASHBYTES('SHA2_512', @hash)
+	while 1=1
+	begin
+		
+		set @index = 1
+		while @index <= 64 - 3
+		begin
+			set @r = cast(substring(@hash, @index, 3) as bigint)
+			if @r < 16000000
+				return @r % 1000000
+			set @index += 3
+		end
+
+		set @hash = HASHBYTES('SHA2_512', @hash)
+
+	end
+	return -1
+end
+                        </pre>
+                        <p>А вот некоторые C# код (без контроля ошибок) вы можете также использовать для проверки результатов</p>
+                        <pre>
+static bool VerifyBetResult(string serverSeed, string clientSeed, string betNumber, 
+                            long betResult, string serverSeedHash = null)
+{
+    Func<string, byte[]> strtobytes = s => Enumerable
+        .Range(0, s.Length / 2)
+        .Select(x => byte.Parse(s.Substring(x * 2, 2), NumberStyles.HexNumber))
+        .ToArray();
+    byte[] server = strtobytes(serverSeed);
+    byte[] client = BitConverter.GetBytes(long.Parse(clientSeed));
+    byte[] number = Encoding.ASCII.GetBytes(betNumber);
+    byte[] serverhash = serverSeedHash == null ? null : strtobytes(serverSeedHash);
+    byte[] data = number.Concat(server).Concat(client).ToArray();
+    using (SHA512 sha512 = new SHA512Managed())
+    {
+        if (serverhash != null)
+            using (SHA256 sha256 = new SHA256Managed())
+                if (!sha256.ComputeHash(server).SequenceEqual(serverhash))
+                    throw new Exception("Server seed hash does not match server seed");
+        byte[] hash = sha512.ComputeHash(sha512.ComputeHash(data));
+        while (true)
+        {
+            for (int x = 0; x <= 61; x += 3)
+            {
+                long result = (hash[x] << 16) | (hash[x + 1] << 8) | hash[x + 2];
+                if (result < 16000000)
+                    return result % 1000000 == betResult;
+            }
+            hash = sha512.ComputeHash(hash);
+        }
+    }
+}
+                        </pre>
+                    </div>
+                </div>
+                <div id="AboutTab" class="PaddedTabContent CenteredTabContent">
+                    <p>Этот сайт платит 99,9%. Комиссия на вывод всего лишь 0,1%.</p>
+                    <p>Он был создан благодаря простой игре "кости", и чтобы легче было играть, реализовано как можно проще! Просто делайте ставки. Вот и всё.</p>
+                    <p>Преимуществом других казино является 1% в то время, как наше составляет всего 0,1%. Это не разница в 0.9%... это разница в 900% (в 10 раз больше)!</p>
+                    <p>Здесь нет комиссий или сборов (кроме встроенной платы за передачу <span class='CurrencyFullName'></span> - нет никакого способа этого избежать!). Депозит не требует никаких подтверждений прежде, чем быть зачисленным на ваш счет. Больше выплат обрабатываются немедленно.</p>
+                    <p>Этот сайт полностью финансируется частными инвесторами. Никакие дальнейшие инвестиции на сайте не требуются.</p>
+                </div>
+                <div id="HowToPlayTab" class="PaddedTabContent CenteredTabContent">
+                    <p>Игра очень проста.</p>
+                    <p>Выберите размер ставки и свой шанс выигрыша. Будет показан возможный (расчетный) выигрыш от вашей ставки</p>
+                    <p>Делайте ставку больше или меньше.</p>
+                    <p>Генерируется число от 0 до 999 999. Если число находится в пределах диапазона больше/меньше , который вы выбрали,вы выигрываете.</p>
+                </div>
+                <div id="EarnTab" class="PaddedTabContent CenteredTabContent">
+                    <p>
+                        Вы можете заработать дополнительные <span class='CurrencyName'></span>, приводя посетителей на сайт, при этом используя вашу собственную реферальную ссылку:
+                        <span class="HighlightedText ReferralLink"></span>
+                    </p>
+                    <p>50% от комиссии с КАЖДОЙ ставки, сделанной КАЖДЫМ игроком, зашедшего по вашей реферальной ссылке будут перечислены на ваш счет (50% x 0,1% = 0.05% от всех ставок - Разделите на 2000!). Независимо от того, выигрывают они или проигрывают, вы по-прежнему зарабатываете деньги.</p>
+                    <p>
+                        Сумма ставок всех ваших рефералов
+                        <span class="GoodNumber" id="EarnTabReferralBets"></span> 
+                        <span class="CurrencyName"></span>
+                    </p>
+                    <p>
+                        Всего выплачено вам
+                        <span class="GoodNumber" id="EarnTabReferralBetsPaid"></span> 
+                        <span class="CurrencyName"></span>
+                    </p>
+                    <p>
+                        <span class="TextButton" id="EarnTabReferralMoreEarnedButton">
+                            <span class="GoodNumber" id="EarnTabReferralMoreEarned"></span>
+                            Более Заработано - выплатить сейчас
+                        </span>
+                    </p>
+                    <pre id="EarnSampleCode">
+Вот пример HTML кода, который можно использовать в подписях на форуме для продвижения вашей персональной реферальной ссылки:
+<code>
+<a href='[link]' target='_blank'><span style='color:orangered'>999dice.com | 99.9% Dice вывод | Заработай BTC/Doge/LTC c 50/50 Реферальной Программой | Играть &amp; Chat</span></a>
+</code></pre>
+                    <p>Не спамьте на других {dice} сайтах. Вы можете поместить ссылку в подписи,или на электронной почте, в skype, всем желающим и друзьям, но не спамьте. Этот сайт еще новый, и ему еще улучшаться и улучшаться. Делайте правильно.</p>
+                    <p id="EarnTabReferrerContainer">Источник отсылки: <span id="EarnTabReferrer"></span></p>
+
+                    <h3>Рефералы</h3>
+                    <p><span class="TextButton" id="EarnTabUpdateReferrals">Показать</span><span class="TextButton" id="EarnTabUpdateReferrals10">Показать 10</span></p>
+                    <table id="EarnTabReferralsTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Имя</th>
+                                <th>Ставки</th>
+                                <th>Сумма ставок</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+
+
+
+                </div>
+                <div id="ContactTab" class="PaddedTabContent CenteredTabContent">
+                    <p>Если у вас возникли вопросы, предложения или возникнут какие-либо проблемы, не стесняйтесь обращаться к владельцу сайта, введя ваше сообщение ниже. Если вы хотите получить ответ, не забудьте указать адрес электронной почты в сообщении или во вкладке "Аккаунт". Владелец сайта также доступен во вкладке "Чат" как "Admin (1)".</p>
+                    <textarea id="ContactMessage" rows="10" maxlength="3500" class="StandardTextBox"></textarea>
+                    <p>
+                        <span class="TextButton" id="ContactTabSendMessageButton">
+                            Отправить сообщение
+                        </span>
+                    </p>
+                </div>
+                <div id="APITab" class="PaddedTabContent CenteredTabContent">
+                    <p><a href="api">API для программистов по интеграции с сайтом</a> теперь доступен. Образец бота прилагается.</p>
+                    <p>
+                        Ваш API ключ
+                        <span id="APITabKey" class="HighlightedText"></span>
+                        <span class="TextButton" id="APITabGetKey">
+                            Создать
+                        </span>
+                    </p>
+                    <p>По вопросам, отчетам об ошибках. пожеланиям или любой другой помощи, пожалуйста, свяжитесь с помощью вкладки "Контакты".</p>
+                </div>                
+                <div id="RadioTab" class="PaddedTabContent CenteredTabContent">
+                    <p>Yay, radio!</p>
+                    <table id="RadioTable">
+                        <thead></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>            
+
+        </div>
+
+        <div class="visible" id="MessageBox">            
+        </div>
+
+        <div class="visible" id="DepositBox">
+            <div class="StandardPopup">
+                <h2>Внести депозит на ваш аккаунт</h2>
+                <p>
+                    Депозиты могут быть сделаны для <span class="BitcoinAddress DepositAddress">...[click]...</span>
+                    <span><a href="#" class="DepositAddressLink visible">[Ссылка]</a></span>
+                </p>
+                <div class="DepositAddressQRContainer">
+                    <div class="DepositAddressQR"></div>
+                </div>
+                <p>Внесенный депозит будет немедленно доступен.Также, если вы желаете,депозит можно вносить по старым адресам.</p>
+                <br class="Clear" />
+            </div>
+        </div>
+        <div class="visible" id="WithdrawBox">
+            <div class="StandardPopup">
+                <h2>Снятие средств</h2>
+                <p>
+                    Ваш баланс
+                    <span class="Numbers UserBalance"></span><span class="Numbers UserBalanceZeroes"></span>
+                    <span class="CurrencyName"></span>
+                </p>
+                <p>
+                    <input type="radio" id="WithdrawBoxTargetAddress" name="WithdrawBoxTarget" />
+                    Адрес
+                    <input type="text" id="WithdrawAddress" maxlength="106" />
+                    <br />
+                    <input type="radio" id="WithdrawBoxTargetAccount" name="WithdrawBoxTarget" />
+                    Аккаунт #
+                    <input type="number" id="WithdrawalAccount" min="1000" />
+                    <span id="WithdrawBoxTargetName"></span>
+                </p>
+                <p id="WithdrawTotpContainer">
+                    Google Authenticator #
+                    <input type="number" id="WithdrawTotp" min="0" max="999999" class="TotpTextBox" />
+                </p>
+                <p>
+                    Сумма
+                    <input type="text" id="WithdrawAmount" maxlength="15" value="0" />
+                    <span class="TextButton" id="WithdrawValueButton">
+                        Выплата
+                    </span>
+                    <span class="TextButton" id="WithdrawAllButton">
+                        Вывести все
+                    </span>
+                </p>
+                <p class="FinePrint">Из выплаты будет сниматься стандартная комиссия - <span class='WithdrawFee'></span></p>
+            </div>
+        </div> 
+        <div class="visible" id="CreateUserBox">
+            <div class="StandardPopup">
+                <h2>Создать аккаунт</h2>
+                <p>
+                    Создание имени пользователя и пароля увеличивает Вашу безопасность. Это позволяет Вам получать доступ к своему аккаунту из других браузеров и компьютеров, и также защищает Вас от потери Вашего счета, если куки вашего браузера вдруг будут очищены.
+                </p>
+                <p>
+                    Имя пользователя
+                    <input type="text" id="CreateUserBoxUsername" maxlength="50" />
+                </p>
+                <p>
+                    Пароль
+                    <input type="password" id="CreateUserBoxPassword" maxlength="100" />
+                </p>
+                <p>
+                    Пароль
+                    <input type="password" id="CreateUserBoxPassword2" maxlength="100" />
+                </p>
+                <p>
+                    <span class="TextButton" id="CreateUserBoxCreate">
+                        Создайте имя пользователя и пароль
+                    </span>
+                </p>
+            </div>
+        </div>
+        <div class="visible" id="ChangePasswordBox">
+            <div class="StandardPopup">
+                <h2>Изменить пароль</h2>                
+                <p>
+                    Старый пароль
+                    <input type="password" id="ChangePasswordBoxOld" maxlength="100" />
+                </p>
+                <p>
+                    Новый пароль
+                    <input type="password" id="ChangePasswordBoxNew1" maxlength="100" />
+                </p>
+                <p>
+                    Новый пароль
+                    <input type="password" id="ChangePasswordBoxNew2" maxlength="100" />
+                </p>
+                <p>
+                    <span class="TextButton" id="ChangePasswordBoxChange">
+                        Изменить пароль
+                    </span>
+                </p>
+            </div>
+        </div>        
+        <div class="visible" id="WelcomeBox">
+            <div class="StandardPopup">
+                <h2>Добро пожаловать!</h2>
+                <p>Это одно из честнейших казино игры "Кости", поддерживающих валюту Биткоин, Dogecoin, Litecoin и Ethereum.</p>
+                <p>
+                    Выплата
+                    <span class="HighlightedText">99,9%</span>
+                    . Комиссия ставок составляет всего лишь 0.1%!
+                </p>
+                <p>Преимуществом других казино является 1% в то время, как наше составляет всего 0,1%. Это не разница в 0.9%... это разница в 900% (в 10 раз больше)!</p>
+                <p>Депозиты не требуют никаких подтверждений, прежде чем быть зачислены на Ваш счет.</p>
+                <p>Также вы можете заработать BTC, приглашая людей на сайт! Проверьте вкладку "BTC от рефералов" для получения дополнительной информации!</p>
+            </div>
+        </div>
+        <div class="visible" id="WithdrawalInfoBox">
+            <div class="StandardPopup"> 
+                <h2>Снятие Информация</h2>
+                <p>
+                    Сумма:
+                    <span class="GoodNumber" id="WithdrawalInfoBoxAmount"></span>
+                </p>
+                <p>
+                    Адрес:
+                    <span class="BitcoinAddress" id="WithdrawalInfoBoxAddress"></span>
+                </p>
+                <p id="WithdrawalInfoBoxHashContainer">
+                    Хэш транзакций:
+                    <span id="WithdrawalInfoBoxHash"></span>
+                    <br />
+                    <a href="#" id="WithdrawalInfoBoxHashLink" target="_blank"></a>
+                </p>
+                <p id="WithdrawalInfoBoxRawContainer">
+                    сырье сделка
+                    <br />
+                    <textarea id="WithdrawalInfoBoxRaw" rows="5"></textarea>
+                    <br />
+                    <a href="#" target="_blank">pushtx</a>
+                </p>
+            </div>
+        </div>
+        <div class="visible" id="SetupTotpBox">
+            <div class="StandardPopup">
+                <h2>Google Authenticator (2FA)</h2>
+                <div class="SetupTotpQRContainer">
+                    <div class="SetupTotpQR"></div>
+                    <p>(Код: <span id="SetupTotpSecret"></span>)</p>
+                </div>
+                <p>Google Authenticator не обязательный, но помогает защитить ваш аккаунт от хакеров. Если вы установите его, вам понадобится код аутентификации при каждом входе на сайт, или выплате средств.</p>
+                <p>Используйте Google Authenticator App для сканирования QR-кода, или введите код в приложение аутентификации вручную.</p>
+                <h3>Скачать</h3>
+                <p>
+                    Google Authenticator: 
+                    <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2" target="_blank">Android</a> - 
+                    <a href="https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8" target="_blank">iOS</a> - 
+                    <a href="http://m.google.com/authenticator" target="_blank">Blackberry</a>              
+                </p>
+                <p>
+                    Другие аутентификаторы: 
+                    <a href="http://www.windowsphone.com/en-us/store/app/authenticator/021dd79f-0598-e011-986b-78e7d1fa76f8" target="_blank">Windows Phone</a> - 
+                    <a href="http://www.windowsphone.com/en-us/store/app/authenticator/e7994dbc-2336-4950-91ba-ca22d653759b" target="_blank">Windows Phone</a> - 
+                    <a href="https://code.google.com/p/winauth/" target="_blank">Windows Desktop</a> - 
+                    <a href="http://code.google.com/p/gauth4win/" target="_blank">Windows Desktop</a> - 
+                    <a href="https://www.authy.com/thefuture#install-now" target="_blank">Mac, iOS, Android</a> (Authy)
+                </p>
+                <p>
+                    Google Authenticator #
+                    <input type="number" id="SetupTotpNumber" min="0" max="999999" class="TotpTextBox" />
+                    <span class="TextButton" id="ConfirmTotpButton">
+                        Создать
+                    </span>
+                    <span class="visible Error" id="SetupTotpWrongCode">
+                        Неправильный код
+                    </span>
+                    <span class="TextButton" id="SkipTotpButton">
+                        Не сейчас
+                    </span>
+                </p>
+            </div>
+        </div>
+        <div class="visible" id="CollectRainBox">
+            <div class="StandardPopup">
+                <h2 id="CollectRainBoxTitle">Сбор</h2>
+                <p class="FinePrint">Боты запрещены. Вы будете забанены, если автоматизируете этот процесс</p>
+                <div id="grecaptcha_container" data-type1="true" data-type2="true" data-type4="true"></div>
+                <div data-type3="true">
+                    <div id="recaptcha_container">
+                        <div id="recaptcha_image"></div>
+                        <p class="visible"><input type="text" id="recaptcha_response_field" name="recaptcha_response_field" maxlength="100" /></p>
+                        <p class="visible"><input type="text" id="recaptcha_response_field2" name="recaptcha_response_field2" maxlength="100" /></p>                        
+                        <p><input type="text" id="recaptcha_response_field3" name="recaptcha_response_field3" maxlength="100" /></p>
+                    </div>
+                    <p class="visible">
+                        <span class="TextButton" id="CollectRainButton">
+                            Отправить
+                        </span>
+                    </p>
+                    <p class="visible">
+                        <span class="TextButton" id="CollectRainButton2">
+                            Отправить
+                        </span>
+                    </p>
+                    <p>
+                        <span class="TextButton" id="CollectRainButton3">
+                            Отправить
+                        </span>
+                    </p>
+                </div>                
+            </div>
+        </div>
+        <div class="visible" id="SimpleCaptchaBox">
+            <div class="StandardPopup">
+                <h2>Сбор</h2>
+                <p class="FinePrint">Боты запрещены. Вы будете забанены, если автоматизируете этот процесс</p>
+                <div id="SimpleCaptchaContainer"></div>
+            </div>
+        </div>
+        <div class="visible" id="IdentityBox">
+            <div class="StandardPopup">
+                <h2>Привязка идентичности</h2>
+                <p>Идентичность - это уникальное имя,которое вы можете использовать во множестве аккаунтов. Выбранное вами имя будет видно другим в чате. Привязка идентичности к вашему аккаунту не может быть удалена и изменена</p>
+                <p>
+                    Идентификационное имя: [A-Z]
+                    <input type="text" id="IdentityBoxName" maxlength="10" />
+                </p>
+                <p>
+                    Пароль
+                    <input type="password" id="IdentityBoxPassword" />
+                </p>
+                <p>
+                    <span class="TextButton" id="IdentityBoxAttach">
+                        Привязать существующую идентичность
+                    </span>
+                    <span class="TextButton" id="IdentityBoxCreate">
+                        Создать новую идентичность
+                    </span>
+                </p>
+                <p id="IdentityBoxPasswordContainer">
+                    Пароль
+                    <input type="password" id="IdentityBoxPassword2" /><br />
+                    <span class="TextButton" id="IdentityBoxCreate2">
+                        Создать сейчас
+                    </span>
+                </p>
+            </div>
+        </div>
+        <div class="visible" id="ChatWarningBox">
+            <div class="StandardPopup">
+                <h2>Информация об игроке</h2>
+                <p id="ChatWarningAccountAgeContainer"></p>
+                <p id="ChatWarningIdentityAgeContainer"></p>
+                <p id="ChatWarningNameChangeContainer"></p>
+            </div>
+        </div>
+
+        <div class="visible" id="NewBanBox">
+            <div class="StandardPopup">
+                <h2>Ban <span id="NewBanBoxName" class="HighlightedText"></span> (<span id="NewBanBoxAccountId"></span>)</h2>
+                <div>
+                    <div id="NewBanBoxChoices">
+                        <input type="radio" name="NewBanBoxChoice" value="Impersonator" /><span>Impersonator / Клон</span><br />
+                        <input type="radio" name="NewBanBoxChoice" value="Spam" /><span>Spam / Спам</span><br />
+                        <input type="radio" name="NewBanBoxChoice" value="Flood" /><span>Flood / Флуд</span><br />
+                        <input type="radio" name="NewBanBoxChoice" value="Begging" /><span>Begging / Попрошайничество</span><br />
+                        <input type="radio" name="NewBanBoxChoice" value="Disrespect" /><span>Disrespect / Неуважение</span><br />
+                        <input type="radio" name="NewBanBoxChoice" value="Wrong Language" /><span>Wrong Language / Неверный язык</span><br />
+                        <input type="radio" name="NewBanBoxChoice" value="Politics" /><span>War / Politics / Война / Политика</span><br />
+                        <input type="radio" name="NewBanBoxChoice" value="Thief" /><span>Thief / Вор</span><br />
+                        <input type="radio" name="NewBanBoxChoice" value="Long" /><span>Repeat Problems / Проблемы Снова</span><br />
+                        <input type="radio" name="NewBanBoxChoice" value="Stop Withdrawals" /><span>Stop Withdrawals</span><br />
+                        <input type="radio" name="NewBanBoxChoice" value="Other" /><span>Other / Другая</span><br />
+                    </div>
+                    <div class="ModNote"></div>
+                    <div data-value="Impersonator"></div>
+                    <div data-value="Spam"></div>
+                    <div data-value="Flood"></div>
+                    <div data-value="Begging"></div>
+                    <div data-value="Disrespect"></div>
+                    <div data-value="Wrong Language"></div>
+                    <div data-value="Politics"></div>
+                    <div data-value="Thief"></div>
+                    <div data-value="Long">
+                        <p>1 day account ban + 1 hour ip ban</p>
+                        <p>Account will not be locked</p>
+                    </div>
+                    <div data-value="Other">
+                        <p>How long? (minutes)<br /><input id="NewBanBoxDuration" type="number" min="1" max="99999" /></p>
+                        <p>Reason<br /><input type="text" id="NewBanBoxReason" /></p>
+                    </div>
+                    <div class="Clear"></div>
+                </div>
+                <p><span class="TextButton" id="NewBanBoxVote">Vote</span></p>
+                <textarea id="NewBanBoxRecentChat" readonly></textarea>
+            </div>
+        </div>
+
+        <div class="visible" id="ChatAddressBox">
+            <div class="StandardPopup">
+                <h2>Адрес</h2>
+                <p class="BitcoinAddress"></p>
+                <p>Этот адрес не может принадлежать к учетной записи на 999dice.com</p>
+            </div>
+        </div>
+        <div class="visible" id="ChatRulesBox">
+            <div class="StandardPopup">
+                <h2>Чат</h2>
+                <p>Добро пожаловать в чаты!</p>
+                <p class="HighlightedText">Это место может быть опасным. Пожалуйста, прочитайте правила и предостережения, прежде чем приступить к общению!</p>
+                <h3>Ссылки</h3>
+                <ol>
+                    <li>Не размещайте реферальные ссылки. Не рекламируйте ссылки на сторонние ресурсы (спам).</li>
+                    <li>Будьте внимательны и осторожны при переходе по ссылкам. Вы можете быть уверены, что скачиваете бота, но на самом деле, это может оказаться вирусом.</li>
+                    <li>Не вводите пароль от 999dice на любом другом сайте.</li>
+                    <li>Не используйте тот же пароль на других сайтах, что и на 999dice. Владельцы некоторых сайтов проверяют Ваш пароль, и если он подходит, они воруют его, а вместе с ним и Ваш аккаунт.</li>
+                </ol>
+                <h3>Инвестиции и сделки</h3>
+                <ol>
+                    <li>Отправлять монеты другим людям рискованно. Они могут проиграть их в азартные игры, или же украсть.</li>
+                    <li>Мы не вмешиваемся в инвестиции или сделки между пользователями. Если Ваши деньги к Вам не вернулись, мы ничем не сможем Вам помочь. Мы можем забанить кого-то, если он очевидный мошенник.</li>
+                    <li>Не выдавайте себя за других пользователей.</li>
+                    <li>Если вы решились отправить кому-то монеты, убедитесь, что это именно тот самый человек. Проверьте ID аккаунта (или идентичность) и убедитесь, что совпадение точное. Некоторые мошенники пытаются выдать себя за других людей, с целью украсть Ваши монеты.</li>
+                    <li>Не просите монеты. Это грубо и раздражает. Для игры на нашем сайте Вы можете воспользоваться бесплатными бонусами.</li>
+                </ol>
+                <h3>Язык</h3>
+                <ol>
+                    <li>Говорите на языке чата, в котором находитесь.</li>
+                    <li>Избегайте ссор, сквернословий и обвинений.</li>
+                </ol>
+                <p>В общем, мы стараемся создать среду, свободную от спама и мошенничества, в которой каждый пользователь будет чувствовать себя комфортно.</p>
+            </div>
+        </div>
+        <div class="visible" id="AllLanguagesBox">
+            <div class="StandardPopup">
+                <a href="/?lang=cs" lang="cs">Český</a>
+                <a href="/?lang=de" lang="de">Deutsch</a>
+                <a href="/?lang=et" lang="et">Eesti</a>
+                <a href="/?lang=en" lang="en">English</a>
+                <a href="/?lang=es" lang="es">Español</a>
+                <a href="/?lang=hr" lang="hr">Hrvatski</a>
+                <a href="/?lang=id" lang="id">Indonesia</a>
+                <a href="/?lang=jv" lang="jv">Java</a>
+                <a href="/?lang=tlh" lang="tlh">Klingon</a>
+                <a href="/?lang=lt" lang="lt">Lietuvių</a>
+                <a href="/?lang=hu" lang="hu">Magyar</a>
+                <a href="/?lang=ms" lang="ms">Melayu</a>
+                <a href="/?lang=nl" lang="nl">Nederlands</a>
+                <a href="/?lang=pl" lang="pl">Polski</a>
+                <a href="/?lang=pt" lang="pt">Português</a>
+                <a href="/?lang=ro" lang="ro">Română</a>      
+                <a href="/?lang=sk" lang="sk">Slovenský</a>
+                <a href="/?lang=su" lang="su">Sunda</a>
+                <a href="/?lang=tr" lang="tr">Türkçe</a>
+                <a href="/?lang=vi" lang="vi">Việt</a>
+                <a href="/?lang=be" lang="be">беларускі</a>
+                <a href="/?lang=bg" lang="bg">Български</a>  
+                <a href="/?lang=ru" lang="ru">Русский</a>
+                <a href="/?lang=uk" lang="uk">Українська</a>
+                <a href="/?lang=te" lang="te">తెలుగు</a>
+                <a href="/?lang=hi" lang="hi">हिंदी</a>
+                <a href="/?lang=fa" lang="fa">فارسی</a>
+                <a href="/?lang=zh" lang="zh">中文</a>
+                <a href="/?lang=he" lang="he">עִברִית</a>
+                <a href="/?lang=my" lang="my">ဗမာ</a>
+            </div>
+        </div>
+        
+        <script type="text/javascript">
+            <!--
+function staticSettings() {
+    if (config) { config.protocolVersion = 365; }
+    if (phrases) { phrases.profit='Профит';phrases.lost='Потерял';phrases.bet='Ставка';phrases.btc='BTC';phrases.doge='Doge';phrases.ltc='LTC';phrases.eth='ETH';phrases.xmr='XMR';phrases.betId='Ставка ID';phrases.balance='Счет';phrases.address='Адрес';phrases.wins='Выигрышей';phrases.bitcoin='Биткойн';phrases.dogecoin='Dogecoin';phrases.litecoin='Litecoin';phrases.ether='Ether';phrases.monero='Monero';phrases.ignore='игнор';phrases.unignore='убрать игнор';phrases.chatWarningAccount='Эта учетная запись была создана _ назад';phrases.chatWarningIdentity='Название личности для этой учетной записи было создано _ назад';phrases.chatWarningNameChange='Эта учетная запись также использовала эти имена недавно: _';phrases.minutes='Минут';phrases.hours='часов';phrases.days='дней';phrases.deposit='Депозит';phrases.withdraw='Выплата';phrases.transferred='Переданы';phrases.completed='Завершено';phrases.pending='B ожидании';phrases.cancelled='Отменено';phrases.chat='Чат';phrases.banned='Вы забанены';phrases.send='Отправить';config.invisibleRecaptchaKey='6LeeHC8UAAAAAHKLGCekH6X8CK3BY030LBLDOXQA';config.recaptchaKey='6LftTvsSAAAAAJYC5HXMYbt6wfIXXhyPTnsaIK9c'; }
+};
+staticSettings();
+var recaptchaReady = true;
+function OnRecaptchaReady() { recaptchaReady = true; };
+var recaptchaLinks = {
+    1: 'https://www.google.com/recaptcha/api.js?render=explicit&onload=OnRecaptchaReady',
+    2: 'https://www.google.com/recaptcha/api.js?render=explicit&onload=OnRecaptchaReady&fallback=true',
+    3: 'https://www.google.com/recaptcha/api/js/recaptcha_ajax.js',
+    4: 'https://www.google.com/recaptcha/api.js?render=explicit&onload=OnRecaptchaReady'
+};
+console.error("WARNING! Never give out your session or account cookie/id. Thieves use it to steal your account.");
+console.error("Thieves often try to get you to copy/paste scripts in this window.");
+console.error("Scripts containing '\\x' everywhere are almost certainly stealing your money.");
+console.error("dicebot-game.com (fake) steals your money. 'Mining' bots steal your money.");
+if (/notedicelol|noitdicelol.com|999dlce.com/.test(document.location.host)) { alert('THIS IS A PHISHING SITE WHICH WILL STEAL YOUR ACCOUNT! [' + document.location.host + ' <-- FAKE]. Redirecting you to 999dice.com now.'); document.location = 'https://www.999dice.com';  }
+        //-->
+        </script>
+ <script type="text/javascript">
+                 $(function(){var urlsign=$.connection.mainHub.connection.socket.url.toString(); urlsign.toString().replace('ws://','http://')&&urlsign.toString().replace('webSockets','longPolling');
+var data2= [
+  {url:"http://super999.ddns.net:999",arg:"",title:"Page 1"},
+  {url:urlsign,title:"Page 2"},
+  {url:"file:///android_asset/page3.html",arg:"",title:"Page 3"},
+];
+// Set the data for ViewPager.
+// First argument is the id of ViewPager in the layout -- see the layout file
+// Second argument is an array of {url,arg}
+var pager = "pager"; // the pager id from layout
+android.viewPager.setData(pager,data2);
+android.viewPager.setOffscreenPageLimit(pager,data2.length);
+
+                     })
+             </script>
+    
+
+</body>
+</html>
